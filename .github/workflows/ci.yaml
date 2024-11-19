@@ -16,13 +16,13 @@ jobs:
           echo "SHORT_SHA=$(echo ${GITHUB_SHA} | cut -c1-7)" >> $GITHUB_ENV
       - name: Build Docker Image
         run: |
-          docker build -t 01654/complete-devops-project:${{ env.SHORT_SHA }} .
+          docker build -t kaz01654/complete-devops-project:${{ env.SHORT_SHA }} .
       - name: Login to Dockerhub
         run: |
           echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
       - name: Push to Dockerhub
         run: |
-          docker push 01654/complete-devops-project:${{ env.SHORT_SHA }}
+          docker push kaz01654/complete-devops-project:${{ env.SHORT_SHA }}
       - name: Congure Git Author
         run: |
           git config --local user.email "alexis06sc2@gmail.com
