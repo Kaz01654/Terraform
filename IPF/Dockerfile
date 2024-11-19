@@ -9,6 +9,7 @@ COPY package*.json ./
 
 # Install dependecies
 RUN npm install
+RUN npm install pm2 -g
 
 # Bundle app
 COPY . .
@@ -17,4 +18,4 @@ COPY . .
 EXPOSE 3000
 
 # Tell Docker how to run your app
-CMD [ "npm", "run", "start:pm2" ]
+CMD [ "pm2-runtime", "app.js" ]
