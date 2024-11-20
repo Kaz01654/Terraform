@@ -1,6 +1,6 @@
 image:
   repository: kaz01654/complete-devops-project
-  tag: 328f550
+  tag: 88b7f57
   pullPolicy: IfNotPresent
 
 service:
