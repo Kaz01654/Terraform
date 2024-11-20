@@ -1,0 +1,17 @@
+image:
+  repository: kaz01654/complete-devops-project
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 8080
+
+ingress:
+  enabled: false
+
+serviceAccount:
+  enabled: false
+
+autoscaling:
+  enabled: false
