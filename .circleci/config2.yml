@@ -7,7 +7,7 @@ jobs:
   # Sonarqube scanner
   scan:
     docker:
-      - image: YOUR DOCKER IMAGE
+      - image: kaz01654/complete-devops-project
     working_directory: /tmp/workspace
     environment:
       ENV_FILE: /tmp/workspace/.circleenv
