@@ -9,8 +9,8 @@ jobs:
     docker:
       - image: kaz01654/complete-devops-project
         auth:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          username: secrets.DOCKERHUB_USERNAME
+          password: secrets.DOCKERHUB_TOKEN
     working_directory: /tmp/workspace
     environment:
       ENV_FILE: /tmp/workspace/.circleenv
