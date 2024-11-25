@@ -39,4 +39,4 @@ workflows:
   main:
     jobs:
         - scan:
-          context: sonarqube
+            context: sonarqube
