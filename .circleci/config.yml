@@ -10,9 +10,9 @@ jobs:
           name: Setup Workspace
           command: |
             echo "Setting up workspace..."
-            mkdir -p /home/circleci/project
+            mkdir -p /KaZ/Repos
       - persist_to_workspace:
-          root: /home/circleci/project
+          root: /KaZ/Repos
           paths:
             - .
 
@@ -21,7 +21,7 @@ jobs:
       - image: maven:3.8.5-openjdk-11  # Use Maven with OpenJDK 11
     steps:
       - attach_workspace:
-          at: /home/circleci/project
+          at: /KaZ/Repos
       - run:
           name: Build and Test Maven Application
           command: |
@@ -32,7 +32,7 @@ jobs:
       - image: maven:3.8.5-openjdk-11  # Use Maven with OpenJDK 11
     steps:
       - attach_workspace:
-          at: /home/circleci/project
+          at: /KaZ/Repos
       - run:
           name: Run Code Linting
           command: |
@@ -44,7 +44,7 @@ jobs:
       - image: maven:3.8.5-openjdk-11  # Use Maven with OpenJDK 11
     steps:
       - attach_workspace:
-          at: /home/circleci/project
+          at: /KaZ/Repos
       - run:
           name: Authenticate with Snyk
           command: |
@@ -59,7 +59,7 @@ jobs:
       - image: aquasec/trivy:latest  # Use Trivy Docker image for scanning
     steps:
       - attach_workspace:
-          at: /home/circleci/project
+          at: /KaZ/Repos
       - run:
           name: Scan Docker Image for Vulnerabilities
           command: |
@@ -70,7 +70,7 @@ jobs:
       - image: maven:3.8.5-openjdk-11  # Use Maven with OpenJDK 11
     steps:
       - attach_workspace:
-          at: /home/circleci/project
+          at: /KaZ/Repos
       - setup_remote_docker:
           docker_layer_caching: true  # Enable Docker layer caching
       - run:
@@ -85,7 +85,7 @@ jobs:
       - image: mkodockx/docker-clamav:latest  # Use ClamAV Docker image for file scanning
     steps:
       - attach_workspace:
-          at: /home/circleci/project
+          at: /KaZ/Repos
       - run:
           name: Scan Files with ClamAV
           command: |
@@ -96,7 +96,7 @@ jobs:
       - image: maven:3.8.5-openjdk-11  # Use Maven with OpenJDK 11
     steps:
       - attach_workspace:
-          at: /home/circleci/project
+          at: /KaZ/Repos
       - run:
           name: Deploy to Kubernetes
           command: |
@@ -108,7 +108,7 @@ jobs:
       - image: maven:3.8.5-openjdk-11  # Use Maven with OpenJDK 11
     steps:
       - attach_workspace:
-          at: /home/circleci/project
+          at: /KaZ/Repos
       - run:
           name: Perform DAST
           command: |
@@ -121,7 +121,7 @@ jobs:
       - image: bitnami/kubectl:latest  # Use Kubernetes CLI Docker image
     steps:
       - attach_workspace:
-          at: /home/circleci/project
+          at: /KaZ/Repos
       - run:
           name: Kubernetes Security Scan
           command: |
@@ -134,7 +134,7 @@ jobs:
       - image: maven:3.8.5-openjdk-11  # Use Maven with OpenJDK 11
     steps:
       - attach_workspace:
-          at: /home/circleci/project
+          at: /KaZ/Repos
       - run:
           name: Send Slack Notification
           command: |
