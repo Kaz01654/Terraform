@@ -4,8 +4,10 @@ orbs:
   sonarscanner: psl/sonarscanner@0.0.4
 
 jobs:
-  # Sonarqube scanner
   scan:
+  - name: Login to Dockerhub
+    run: |
+      echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
     docker:
       - image: kaz01654/complete-devops-project
     working_directory: /tmp/workspace
