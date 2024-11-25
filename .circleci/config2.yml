@@ -8,6 +8,9 @@ jobs:
   scan:
     docker:
       - image: kaz01654/complete-devops-project
+        auth:
+          username: kaz01654
+          password: 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
     working_directory: /tmp/workspace
     environment:
       ENV_FILE: /tmp/workspace/.circleenv
@@ -17,10 +20,6 @@ jobs:
     - checkout
     - attach_workspace:
           at: /tmp/workspace
-    - run:
-        name: Login to Dockerhub
-        command: |
-          echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
     - run:
         name: Install Sonarqube scanner
         command: |
