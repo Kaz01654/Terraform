@@ -9,8 +9,8 @@ jobs:
     docker:
       - image: kaz01654/complete-devops-project
         auth:
-          username: secrets.DOCKERHUB_USERNAME
-          password: secrets.DOCKERHUB_TOKEN
+          run: |
+            echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
     working_directory: /tmp/workspace
     environment:
       ENV_FILE: /tmp/workspace/.circleenv
