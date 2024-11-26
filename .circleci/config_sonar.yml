@@ -1,5 +1,8 @@
 version: 2.1
 
+orbs:
+  snyk: snyk/snyk@1.4.1
+
 jobs:
   install_dependencies:
     docker:
@@ -37,6 +40,11 @@ jobs:
       - run:
           name: Checking images locally
           command: docker images
+      - snyk/scan:
+          severity-threshold: high
+          docker-image-name: DOCKERHUB_USERNAME/circleci:latest
+          target-file: "Dockerfile"
+          fail-on-issues: true
       - run:
           name: Push Image to DockerHub
           command: |
