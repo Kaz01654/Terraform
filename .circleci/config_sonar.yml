@@ -12,6 +12,7 @@ jobs:
       - run:
           name: Install NPM dependencies
           command: npm install
+      - snyk/scan
   sonarCloud_analysis:
     docker:
       - image: circleci/node:latest
@@ -40,12 +41,6 @@ jobs:
       - run:
           name: Checking images locally
           command: docker images
-      - snyk/scan:
-          fail-on-issues: false
-          monitor-on-build: true
-          project: $DOCKERHUB_USERNAME/circleci:latest
-          severity-threshold: high
-          token-variable: SNYK_TOKEN
       - run:
           name: Push Image to DockerHub
           command: |
