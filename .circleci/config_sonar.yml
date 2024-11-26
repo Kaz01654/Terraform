@@ -25,6 +25,28 @@ jobs:
             export SONAR_SCANNER_OPTS="-server"
             ls $SONAR_SCANNER_HOME/bin #check if sonar-scanner binary is present here
             sonar-scanner -Dsonar.organization=circleci -Dsonar.projectKey=circleci_circlecicd -Dsonar.sources=. -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_TOKEN
+  build_scan_push_docker_image:
+    docker:
+      - image: docker:20.10.7
+    steps:
+      - setup_remote_docker
+      - checkout
+      - run:
+          name: Build Docker Image
+          command: docker build -t $DOCKERHUB_USERNAME/circleci:latest .
+      - run:
+          name: Checking images locally
+          command: docker images
+      - run:
+          name: Push Image to DockerHub
+          command: |
+            echo $DOCKERHUB_TOKEN | docker login -u $DOCKERHUB_USERNAME --password-stdin
+            docker push "$DOCKERHUB_USERNAME/circleci:latest"
+      - run:
+          name: Trivy Scan
+          command: |
+            docker pull aquasec/trivy:latest
+            docker run -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:latest --severity HIGH,CRITICAL image $DOCKERHUB_USERNAME/circleci:latest
 workflows:
   version: 2
   deploy_workflow:
@@ -33,3 +55,6 @@ workflows:
       - sonarCloud_analysis:
           requires:
             - install_dependencies
+      - build_scan_push_docker_image:
+          requires:
+            - sonarCloud_analysis
