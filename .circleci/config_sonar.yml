@@ -45,7 +45,7 @@ jobs:
           monitor-on-build: true
           project: $DOCKERHUB_USERNAME/circleci:latest
           severity-threshold: high
-          token-variable: $SNYK_TOKEN
+          token-variable: SNYK_TOKEN
       - run:
           name: Push Image to DockerHub
           command: |
