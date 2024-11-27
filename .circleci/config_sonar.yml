@@ -60,8 +60,8 @@ jobs:
           name: Snyk Scan Application files
           command: npm install
       - snyk/scan:
-          project: Snyk test
-          organization: Kaz01654
+          project: "Snyk test"
+          organization: "Kaz01654"
           token-variable: SNYK_TOKEN
           docker-image-name: $DOCKERHUB_USERNAME/circleci:latest
           target-file: "Dockerfile"
