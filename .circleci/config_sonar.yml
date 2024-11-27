@@ -4,7 +4,7 @@ orbs:
   snyk: snyk/snyk@1.4.1
 
 jobs:
-  install_scan_dependencies:
+  install_sca_scan_dependencies:
     docker:
       - image: circleci/node:latest
     steps:
@@ -13,7 +13,7 @@ jobs:
           name: Snyk Scan App Dependencies
           command: npm install
       - snyk/scan
-  sonarCloud_analysis:
+  sast_sonarCloud_analysis:
     docker:
       - image: circleci/node:latest
     steps:
@@ -29,7 +29,7 @@ jobs:
             export SONAR_SCANNER_OPTS="-server"
             ls $SONAR_SCANNER_HOME/bin #check if sonar-scanner binary is present here
             sonar-scanner -Dsonar.organization=circleci -Dsonar.projectKey=circleci_circlecicd -Dsonar.sources=. -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_TOKEN
-  build_scan_push_docker_image:
+  build_sca_scan_push_docker_image:
     docker:
       - image: docker:20.10.7
     steps:
@@ -69,13 +69,13 @@ workflows:
   version: 2
   deploy_workflow:
     jobs:
-      - install_scan_dependencies
-      - sonarCloud_analysis:
+      - install_sca_scan_dependencies
+      - sast_sonarCloud_analysis:
           requires:
-            - install_scan_dependencies
-      - build_scan_push_docker_image:
+            - install_sca_scan_dependencies
+      - build_sca_scan_push_docker_image:
           requires:
-            - sonarCloud_analysis
+            - sast_sonarCloud_analysis
       - scan_docker_image:
           requires:
-            - build_scan_push_docker_image
+            - build_sca_scan_push_docker_image
