@@ -41,10 +41,6 @@ jobs:
       - run:
           name: Checking images locally
           command: docker images
-      - snyk/scan:
-          token-variable: SNYK_TOKEN
-          docker-image-name: $DOCKERHUB_USERNAME/circleci:latest
-          target-file: "Dockerfile"
       - run:
           name: Push Image to DockerHub
           command: |
@@ -55,6 +51,20 @@ jobs:
           command: |
             docker pull aquasec/trivy:latest
             docker run -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:latest --severity HIGH,CRITICAL image $DOCKERHUB_USERNAME/circleci:latest
+  scan_app:
+    docker:
+      - image: cimg/node:14.16.0
+    steps:
+      - checkout
+      - run:
+          name: Snyk Scan Application files
+          command: npm install
+      - snyk/scan:
+          token-variable: SNYK_TOKEN
+          docker-image-name: $DOCKERHUB_USERNAME/circleci:latest
+          target-file: "Dockerfile"
+          fail-on-issues: false
+          monitor-on-build: false
 workflows:
   version: 2
   deploy_workflow:
@@ -66,3 +76,6 @@ workflows:
       - build_scan_push_docker_image:
           requires:
             - sonarCloud_analysis
+      - scan_app:
+          requires:
+            - build_scan_push_docker_image
