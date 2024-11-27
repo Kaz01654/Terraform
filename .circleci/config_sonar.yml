@@ -67,6 +67,7 @@ jobs:
           target-file: "Dockerfile"
           fail-on-issues: false
           monitor-on-build: true
+workflows:
   version: 2
   deploy_workflow:
     jobs:
