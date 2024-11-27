@@ -1,5 +1,5 @@
 # You can find your node version with: node --version
-FROM node:22.11.0-bookworm-slim
+FROM node:22.11.0-alpine3.19
 
 # Create app directory
 WORKDIR /app
