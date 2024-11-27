@@ -4,13 +4,13 @@ orbs:
   snyk: snyk/snyk@1.4.1
 
 jobs:
-  install_dependencies:
+  install_scan_dependencies:
     docker:
       - image: circleci/node:latest
     steps:
       - checkout
       - run:
-          name: Install NPM dependencies
+          name: Snyk Scan App Dependencies
           command: npm install
       - snyk/scan
   sonarCloud_analysis:
@@ -51,28 +51,29 @@ jobs:
           command: |
             docker pull aquasec/trivy:latest
             docker run -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:latest --severity HIGH,CRITICAL image $DOCKERHUB_USERNAME/circleci:latest
-  scan_app:
+  scan_docker_image:
     docker:
-      - image: cimg/node:14.16.0
+      - image: cimg/node:22.11.0
     steps:
       - checkout
       - run:
           name: Snyk Scan Application files
           command: npm install
       - snyk/scan:
+          project: Snyk test
+          organization: Kaz01654
           token-variable: SNYK_TOKEN
           docker-image-name: $DOCKERHUB_USERNAME/circleci:latest
           target-file: "Dockerfile"
           fail-on-issues: false
-          monitor-on-build: false
-workflows:
+          monitor-on-build: true
   version: 2
   deploy_workflow:
     jobs:
-      - install_dependencies
+      - install_scan_dependencies
       - sonarCloud_analysis:
           requires:
-            - install_dependencies
+            - install_scan_dependencies
       - build_scan_push_docker_image:
           requires:
             - sonarCloud_analysis
